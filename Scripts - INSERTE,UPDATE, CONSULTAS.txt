@@ -1,0 +1,244 @@
+Projeto Banco de Dados 2 (MongoDB)
+
+INDEX
+
+db.funcionario.createIndex({name: 1})
+db.funcionario.createIndex({cpf: 1})
+
+i. Inserções diversas
+db.cargoinsertMany([
+
+{
+    "_id" : ObjectId("5b68bfab373c657bd866aef4"),
+    "desccargo" : "Garçon"
+},
+
+
+{
+    "_id" : ObjectId("5b68bfab373c657bd866aef5"),
+    "desccargo" : "Gerente"
+},
+
+
+{
+    "_id" : ObjectId("5b68bfab373c657bd866aef6"),
+    "desccargo" : "Cozinha"
+},
+
+
+{
+    "_id" : ObjectId("5b68bfab373c657bd866aef7"),
+    "desccargo" : "Auxiliar de cozinha"
+},
+
+
+{
+    "_id" : ObjectId("5b68bfab373c657bd866aef8"),
+    "desccargo" : "Faxineiro"
+}
+])
+
+
+
+db.pedido.insertMany([
+{
+    "_id" : ObjectId("5b68dc655910cf9f4d182b7b"),
+    "desc" : "Rodízio"
+},
+
+{
+    "_id" : ObjectId("5b68dc655910cf9f4d182b7c"),
+    "desc" : "Ala Carte"
+},
+
+
+{
+    "_id" : ObjectId("5b68dc655910cf9f4d182b7d"),
+    "desc" : "Ala Carte"
+},
+
+
+{
+    "_id" : ObjectId("5b68dc655910cf9f4d182b7e"),
+    "desc" : "Rodízio"
+},
+
+
+{
+    "_id" : ObjectId("5b68dc655910cf9f4d182b7f"),
+    "desc" : "Rodízio"
+}])
+
+db.funcionario.insertMany([
+
+{
+    "_id" : ObjectId("5b68e5f85910cf9f4d182b80"),
+    "name" : "Lucas",
+    "email" : "lucas1@example.com",
+    "cpf" : 11111111111.0,
+    "telefone" : [ 
+        988844511.0, 
+        815526333.0
+    ],
+    "endereco" : {
+        "rua" : "XX",
+        "num" : 1.0
+    },
+    "salario" : 900.0,
+    "pedido_id" : [ 
+        ObjectId("5b68dc655910cf9f4d182b7b"), 
+        ObjectId("5b68dc655910cf9f4d182b7e")
+    ],
+    "cargo_id" : ObjectId("5b68bfab373c657bd866aef4")
+},
+
+{
+    "_id" : ObjectId("5b68e5f85910cf9f4d182b81"),
+    "name" : "João",
+    "email" : "joao@example.com",
+    "cpf" : 22222222222.0,
+    "telefone" : [ 
+        339452689.0, 
+        985632149.0
+    ],
+    "endereco" : {
+        "rua" : "YY",
+        "num" : 2.0
+    },
+    "salario" : 800.0,
+    "pedido_id" : [ 
+        ObjectId("5b68dc655910cf9f4d182b7d")
+    ],
+    "cargo_id" : ObjectId("5b68bfab373c657bd866aef4")
+},
+
+{
+    "_id" : ObjectId("5b68e8435910cf9f4d182b82"),
+    "name" : "Alfred",
+    "email" : "Alfred@example.com",
+    "cpf" : 33333333333.0,
+    "telefone" : [ 
+        999999999.0, 
+        777777777.0
+    ],
+    "endereco" : {
+        "rua" : "ZZ",
+        "num" : 3.0
+    },
+    "salario" : 3000.0,
+    "pedido_id" : [ 
+        ObjectId("5b68dc655910cf9f4d182b7e"), 
+        ObjectId("5b68dc655910cf9f4d182b7c")
+    ],
+    "cargo_id" : ObjectId("5b68bfab373c657bd866aef5")
+}
+])
+
+db.funcionario.insertMany([{name: "Lucas", email: "lucas@example.com", 
+    cpf: 11111111111, telefone: [988844511, 815526333], endereco: {rua:"XX", num:01},
+    salario: 900, pedido_id: [ObjectId("5b68dc655910cf9f4d182b7b"),ObjectId("5b68dc655910cf9f4d182b7e")], 
+    cargo_id: ObjectId("5b68bfab373c657bd866aef4")},
+    {name: "João", email: "joao@example.com", cpf: 22222222222, telefone: [339452689, 985632149], endereco: {rua:"YY", num: 02}, salario: 800, 
+    pedido_id: [ObjectId("5b68dc655910cf9f4d182b7d")], cargo: ObjectId("5b68bfab373c657bd866aef8")}])
+    
+db.funcionario.insertOne({name: "Alfred", email: "Alfred@example.com", cpf: 33333333333, telefone:[999999999, 777777777], 
+    endereco: {rua: "ZZ", num: 03}, salario: 2000, pedido_id: [ObjectId("5b68dc655910cf9f4d182b7e"), ObjectId("5b68dc655910cf9f4d182b7c")],
+    cargo_id: ObjectId("5b68bfab373c657bd866aef5")})
+
+
+ii. Atualizações (02)
+    
+db.funcionario.update({"salario": 3000},{$set: {"salario": 4000}})
+db.funcionario.update({"name": "Lucas"}, {$set: {"email": "lucas2@example.com"}})
+
+REMOVE
+
+db . funcionario. deleteOne (
+    {cpf :  ObjectId("5b68e5f85910cf9f4d182b80") }
+)
+
+-01 com Coleção inteira
+//Mostra todos os funcionarios, pedidos e cargos
+
+db.pedido.find()
+db.cargo.find()
+db.funcionario.find()
+
+-01 com Contagem de documentos na coleção
+// Conta quantos cargos tem cadastrados
+db.cargo.count()
+
+-03 consultas com filtros diversos (IN, GT, etc), sem projeção
+//Mostra os funcionarios com salario abaixo de 1000
+db.funcionario.find({salario:{$lt: 1000}})
+//Mostra os funcionarios salario acima de 1000
+db.funcionario.find({salario:{$gt: 1000}})
+//Mostra os funcionarios com o salarario com intervale entre 800 e 950$
+db.funcionario.find({salario:{$gt: 800, $lt:950}})
+
+-03 consultas com filtros diversos, com projeção
+//Mostra o nome do funcionario do id passado 
+db.funcionario.find({cargo_id: ObjectId("5b68bfab373c657bd866aef4")},{"name": 1})
+//mostra o nome dos funcionarios com dois numeros de telefone cadastrados
+db.funcionario.find({"telefone": {$size:2}},{"name": 1})
+
+-01 consulta com filtro, projeção e uso de expressão regular
+// mostra o funcionario com nome começando pela letra "L"
+db.funcionario.find( { name: /^L/ } )
+
+-01 consulta com acesso a array de elementos
+//mostra o funcionario que tem o numero de telefone igual o passado no indice [1] do array
+db.funcionario.find({"telefone.1":815526333.0})
+
+-01 consulta com acesso a estrutura embutida
+//Mostra o funcionario verificando a partir da rua = "XX"
+db.funcionario.find({"endereco.rua": "XX"})
+
+-01 consulta com função de agregação (sum, avg, max ou min)
+
+  db.funcionario.aggregate([
+     {
+         $group: {
+             _id: $salario,
+             soma: {$sum: $salario}
+             }
+         },
+         ]);
+         
+         
+     db.funcionario.aggregate([
+     {
+         $group: {
+             _id: $salario,
+             avg: {$avg: $salario}
+             }
+         },
+         ]);
+
+   db.funcionario.aggregate([
+    {
+        $match: {salario: {$gt: 800}}
+    }
+        ])
+    
+
+-01 consulta que use distinct ou limit
+//Mostra a descrição dos dois primeiros documentos com a desc =  "Rodízio"
+db.pedido.find({"desc": "Rodízio"},{"desc": 1}).limit(2);
+
+-01 outra consulta a seu critério, explicando o porquê dela.
+//Mostra dados das duas tabelas:
+ cargo e funcionario, possibilitando visualizar a descrição do cargo e o nome do funcionario associado a ele.
+  db.cargo.aggregate([
+    {$lookup:{
+        from: "funcionario",
+        localField: "_id",
+        foreignField: "cargo_id",
+        as: "funcionario_cargo"
+        }}
+    ])
+
+
+     
+     
+    
